@@ -9,5 +9,5 @@ RUN GOOS=linux go build -a -mod vendor -o /paseto .
 
 FROM vault:1.2.0
 COPY ./paseto.hcl /vault/config
-COPY --from=builder /paseto /etc/vault/vault_plugins
+COPY --from=builder /paseto /etc/vault/vault_plugins/
 CMD ["vault", "server", "-config=/etc/vault/local.hcl", "-log-level=debug"]
