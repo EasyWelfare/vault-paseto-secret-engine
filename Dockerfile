@@ -3,7 +3,6 @@ FROM golang:1.12.6-stretch AS builder
 WORKDIR /plugin
 COPY ./go.mod ./go.sum ./main.go ./
 COPY ./vendor ./vendor
-COPY ./cmd ./cmd
 COPY ./paseto ./paseto
 COPY ./vault ./vault
 RUN GOOS=linux go build -a -mod vendor -o paseto-plugin
