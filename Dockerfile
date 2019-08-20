@@ -10,4 +10,5 @@ RUN CGO_ENABLED="0" GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -mod vend
 FROM vault:1.2.0
 RUN mkdir -p /etc/vault/vault_plugins
 COPY --from=builder /paseto /etc/vault/vault_plugins/
+RUN chmod +x /etc/vault/vault_plugins/paseto && sha256sum /etc/vault/vault_plugins/paseto
 CMD ["vault", "server", "-config=/etc/vault/local.hcl", "-log-level=debug"]
