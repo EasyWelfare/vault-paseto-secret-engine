@@ -86,6 +86,16 @@ func (b *backend) paths() []*framework.Path {
 			},
 		},
 		{
+			Pattern:         "info",
+			HelpSynopsis:    helpMessage,
+			HelpDescription: helpMessage,
+			Fields:          map[string]*framework.FieldSchema{},
+
+			Operations: map[logical.Operation]framework.OperationHandler{
+				logical.ReadOperation: &framework.PathOperation{},
+			},
+		},
+		{
 			Pattern: "paseto/public",
 			Fields:  map[string]*framework.FieldSchema{},
 
