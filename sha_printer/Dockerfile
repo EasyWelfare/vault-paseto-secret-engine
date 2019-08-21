@@ -1,4 +1,4 @@
-FROM golang:1.12.6-stretch AS builder
+FROM golang:1.12.6-stretch
 
 WORKDIR /app
 COPY ./go.mod ./go.sum ./main.go ./
