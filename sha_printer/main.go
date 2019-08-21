@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/sha256"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -19,6 +20,11 @@ type CacheRecord struct {
 	sha        []byte
 }
 
+type Response struct {
+	Sha      string `json:"sha"`
+	Filename string `json:"filename"`
+}
+
 func main() {
 	path := os.Getenv("PLUGIN_PATH")
 	if path == "" {
@@ -29,13 +35,13 @@ func main() {
 	r.Use(cors.Default())
 	r.GET("/sha/:plugin", func(c *gin.Context) {
 		plugin := c.Param("plugin")
-		plugin_path := filepath.Join(path, plugin)
-		fstat, err := os.Stat(plugin_path)
+		pluginPath := filepath.Join(path, plugin)
+		fstat, err := os.Stat(pluginPath)
 		if err != nil {
 			c.JSON(http.StatusNotFound, err.Error())
 			return
 		}
-		record, ok := cache.Load(plugin_path)
+		record, ok := cache.Load(pluginPath)
 		if ok {
 			record, okcast := record.(CacheRecord)
 			if !okcast {
@@ -58,9 +64,9 @@ func main() {
 			log.Fatal(err)
 		}
 		sha := h.Sum(nil)
-		cache.Store(plugin_path, CacheRecord{lastUpdate: fstat.ModTime(), sha: sha})
+		cache.Store(pluginPath, CacheRecord{lastUpdate: fstat.ModTime(), sha: sha})
 		log.Printf("%x", sha)
-		c.JSON(http.StatusOK, string(sha))
+		c.JSON(http.StatusOK, Response{Sha: fmt.Sprintf("%x", sha), Filename: plugin})
 	})
 	r.Run(":8080") // listen and serve on 0.0.0.0:8080
 }
