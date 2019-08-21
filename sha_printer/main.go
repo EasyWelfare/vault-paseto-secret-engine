@@ -49,7 +49,7 @@ func main() {
 			}
 			if !record.lastUpdate.Before(fstat.ModTime()) {
 				log.Printf("%x", record.sha)
-				c.JSON(http.StatusOK, string(record.sha))
+				c.JSON(http.StatusOK, Response{Sha: fmt.Sprintf("%x", record.sha), Filename: plugin})
 				return
 			}
 		}
