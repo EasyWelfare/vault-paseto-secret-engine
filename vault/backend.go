@@ -191,7 +191,8 @@ func (b *backend) generateToken(ctx context.Context, req *logical.Request, data 
 
 	response := &logical.Response{
 		Data: map[string]interface{}{
-			"token": token,
+			"token":      token,
+			"expiration": expirationTime,
 		},
 	}
 
