@@ -24,24 +24,24 @@ This kind of setup is done through the following command :
 
 
 ```bash
-vault write <path/paseto/config> footer="whatever" ttl=120
+vault write <path>/paseto/config footer="whatever" ttl=120
 ```
 
 to check the just written configuration you can hit:
 
 ```bash
-vault read <path/paseto/config>
+vault read <path>/paseto/config
 ```
 
 ## Exposed Entrypoints
 
 Once the plugin is configured, accordingly to the ACL set (see ACL section below), you can access to :
 
-1. <path/paseto/token> : if you are allowed to access to this path, it will return a paseto compliant token with the expiration time set in the `ttl` configuration previously set
+1. <path>/paseto/token : if you are allowed to access to this path, it will return a paseto compliant token with the expiration time set in the `ttl` configuration previously set
 
-2. <path/paseto/public> : if you are allowed to access to this path, it will return the public key
+2. <path>/paseto/public : if you are allowed to access to this path, it will return the public key
 
-3. <path/paseto/config> : if you are allowed to access to this path, it will give you  the configuration previously set
+3. <path>/paseto/config : if you are allowed to access to this path, it will give you  the configuration previously set
 
 the `<path>` is intended to match with the configuration path previously set
 
