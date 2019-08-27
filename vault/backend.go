@@ -80,7 +80,7 @@ func (b *backend) paths() []*framework.Path {
 	log.Print("setting paths")
 	return []*framework.Path{
 		{
-			Pattern: "paseto/token",
+			Pattern: "token",
 
 			Fields: map[string]*framework.FieldSchema{},
 
@@ -92,7 +92,7 @@ func (b *backend) paths() []*framework.Path {
 			},
 		},
 		{
-			Pattern: "paseto/public",
+			Pattern: "public",
 			Fields:  map[string]*framework.FieldSchema{},
 
 			Operations: map[logical.Operation]framework.OperationHandler{
@@ -103,7 +103,7 @@ func (b *backend) paths() []*framework.Path {
 			},
 		},
 		{
-			Pattern: "paseto/config",
+			Pattern: "config",
 			Fields: map[string]*framework.FieldSchema{
 				"footer": {
 					Type:        framework.TypeString,
