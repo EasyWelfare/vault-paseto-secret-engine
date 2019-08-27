@@ -11,6 +11,7 @@ import (
 )
 
 func (b *backend) readPublicKey(ctx context.Context, req *logical.Request, data *framework.FieldData) (*logical.Response, error) {
+	log.Print("reading publicKey")
 	if req.ClientToken == "" {
 		return nil, fmt.Errorf("client token empty")
 	}
