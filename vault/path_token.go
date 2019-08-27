@@ -12,6 +12,7 @@ import (
 )
 
 func (b *backend) generateToken(ctx context.Context, req *logical.Request, data *framework.FieldData) (*logical.Response, error) {
+	log.Print("creating token")
 	if req.ClientToken == "" {
 		return nil, fmt.Errorf("client token empty")
 	}
