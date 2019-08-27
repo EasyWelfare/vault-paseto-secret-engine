@@ -46,17 +46,19 @@ func Factory(ctx context.Context, conf *logical.BackendConfig) (logical.Backend,
 		storage: conf.StorageView,
 	}
 
-	b.storage.Put(ctx, &logical.StorageEntry{
-		Key:      publicKeyConst,
-		Value:    publicKey,
-		SealWrap: false,
-	})
+	if entry, _ := b.storage.Get(ctx, publicKeyConst); entry == nil {
+		b.storage.Put(ctx, &logical.StorageEntry{
+			Key:      publicKeyConst,
+			Value:    publicKey,
+			SealWrap: false,
+		})
 
-	b.storage.Put(ctx, &logical.StorageEntry{
-		Key:      privateKeyConst,
-		Value:    privateKey,
-		SealWrap: false,
-	})
+		b.storage.Put(ctx, &logical.StorageEntry{
+			Key:      privateKeyConst,
+			Value:    privateKey,
+			SealWrap: false,
+		})
+	}
 
 	b.Backend = &framework.Backend{
 		Help:        strings.TrimSpace(helpMessage),
