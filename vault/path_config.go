@@ -14,11 +14,8 @@ import (
 
 func (b *backend) configurePasetoGenerator(ctx context.Context, req *logical.Request, data *framework.FieldData) (*logical.Response, error) {
 	log.Printf("received configurePasetoGenerator call with req %v and data %v ", *req, *data)
-	if b.config != nil {
-		return logical.ErrorResponse("Config was already set."), nil
-	}
 
-	b.config = &Config{}
+	b.config = Config{}
 	b.config.Footer = data.Get("footer").(string)
 	ttl, ok := data.Get("ttl").(int)
 	if !ok {
@@ -34,7 +31,7 @@ func (b *backend) getConfiguration(ctx context.Context, req *logical.Request, da
 		return nil, fmt.Errorf("client token empty")
 	}
 	log.Printf("footer: %s, ttl: %v", b.config.Footer, b.config.Ttl)
-	config, _ := json.Marshal(*b.config)
+	config, _ := json.Marshal(b.config)
 	response := &logical.Response{
 		Data: map[string]interface{}{
 			"config": string(config),

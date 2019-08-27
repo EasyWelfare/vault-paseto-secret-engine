@@ -14,9 +14,9 @@ import (
 
 type backend struct {
 	*framework.Backend
-	paseto  *paseto.PasetoTokenGenerator
+	paseto  paseto.PasetoTokenGenerator
 	storage logical.Storage
-	config  *Config
+	config  Config
 }
 
 const (
@@ -33,7 +33,7 @@ type Config struct {
 
 func Factory(ctx context.Context, conf *logical.BackendConfig) (logical.Backend, error) {
 
-	log.Printf("here")
+	log.Printf("Factory initializing")
 	pasetoGenerator, publicKey, privateKey, err := paseto.NewPasetoTokenGenerator()
 
 	if err != nil {
@@ -42,7 +42,7 @@ func Factory(ctx context.Context, conf *logical.BackendConfig) (logical.Backend,
 	}
 
 	b := &backend{
-		paseto:  pasetoGenerator,
+		paseto:  *pasetoGenerator,
 		storage: conf.StorageView,
 	}
 
