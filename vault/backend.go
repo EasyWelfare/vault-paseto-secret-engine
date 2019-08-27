@@ -75,6 +75,7 @@ func Factory(ctx context.Context, conf *logical.BackendConfig) (logical.Backend,
 }
 
 func (b *backend) paths() []*framework.Path {
+	log.Print("setting paths")
 	return []*framework.Path{
 		{
 			Pattern: "paseto/token",
