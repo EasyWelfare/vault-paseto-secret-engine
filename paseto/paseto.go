@@ -1,6 +1,7 @@
 package paseto
 
 import (
+	"log"
 	"time"
 
 	"github.com/o1egl/paseto"
@@ -25,10 +26,13 @@ func NewPasetoTokenGenerator() (*PasetoTokenGenerator, ed25519.PublicKey, ed2551
 	}, publicKey, privateKey, nil
 }
 
-func (p *PasetoTokenGenerator) GeneratePasetoToken(privateKey ed25519.PrivateKey, footer *string, expiration time.Time, claims map[string]string) (*string, error) {
+func (p *PasetoTokenGenerator) GeneratePasetoToken(privateKey ed25519.PrivateKey, footer *string, expirationDuration time.Duration, claims map[string]string) (*string, error) {
+
+	log.Printf("paseto expirationDuration is %v", expirationDuration)
+	expirationTime := time.Now().UTC().Add(expirationDuration).Round(time.Second)
 
 	jsonToken := &paseto.JSONToken{
-		Expiration: expiration,
+		Expiration: expirationTime,
 	}
 
 	// Add custom claim	to the token

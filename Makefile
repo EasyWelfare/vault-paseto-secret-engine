@@ -37,6 +37,9 @@ config:
 read-token:
 	vault read ${PLUGIN_PATH}/paseto/token
 
+read-token-json:
+	vault read ${PLUGIN_PATH}/paseto/token -format=json
+ 
 clean:
 	rm -f ./vault/plugins/paseto
 

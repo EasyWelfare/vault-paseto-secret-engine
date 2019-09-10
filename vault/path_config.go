@@ -2,7 +2,6 @@ package vault
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -21,7 +20,10 @@ func (b *backend) configurePasetoGenerator(ctx context.Context, req *logical.Req
 	if !ok {
 		return logical.ErrorResponse("tll is not an int"), nil
 	}
-	b.config.Ttl = time.Second * time.Duration(ttl)
+	log.Printf("config ttl is %v", ttl)
+	ttlDuration := time.Duration(ttl) * time.Second
+	log.Printf("config ttlDuration is %v", ttlDuration)
+	b.config.Ttl = ttlDuration
 	//TODO enrich response
 	return nil, nil
 
@@ -31,10 +33,10 @@ func (b *backend) getConfiguration(ctx context.Context, req *logical.Request, da
 		return nil, fmt.Errorf("client token empty")
 	}
 	log.Printf("footer: %s, ttl: %v", b.config.Footer, b.config.Ttl)
-	config, _ := json.Marshal(b.config)
 	response := &logical.Response{
 		Data: map[string]interface{}{
-			"config": string(config),
+			"ttl":    b.config.Ttl.Seconds(),
+			"footer": b.config.Footer,
 		},
 	}
 

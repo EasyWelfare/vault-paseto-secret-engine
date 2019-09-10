@@ -24,18 +24,23 @@ func (b *backend) generateToken(ctx context.Context, req *logical.Request, data 
 		return logical.ErrorResponse(err.Error()), err
 	}
 
-	expirationTime := time.Now().Add(b.config.Ttl)
+	timeNow := time.Now().UTC()
+	expirationDate := time.Now().UTC().Add(b.config.Ttl)
+	log.Printf("path_token expirationDate is %v", expirationDate)
 
-	token, err := b.paseto.GeneratePasetoToken(privateKeyStorageEntity.Value, &b.config.Footer, expirationTime, claim)
+	leaseDuration := expirationDate.Sub(timeNow).Round(time.Second)
+	log.Printf("path_token leaseDuration is %v", leaseDuration)
+
+	token, err := b.paseto.GeneratePasetoToken(privateKeyStorageEntity.Value, &b.config.Footer, leaseDuration, claim)
 	if err != nil {
-		log.Printf("error generating paseto token with footer %s, expirationTime %v and claim %v: %v", b.config.Footer, expirationTime, claim, err)
+		log.Printf("error generating paseto token with footer %s, expirationTime %v and claim %v: %v", b.config.Footer, leaseDuration, claim, err)
 		return logical.ErrorResponse(err.Error()), err
 	}
 
 	response := &logical.Response{
 		Data: map[string]interface{}{
-			"token":      token,
-			"expiration": expirationTime,
+			"token":          token,
+			"lease_duration": leaseDuration.Seconds(),
 		},
 	}
 
