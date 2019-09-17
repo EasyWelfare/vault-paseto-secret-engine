@@ -13,6 +13,7 @@ type PasetoTokenGenerator struct {
 	*paseto.V2
 }
 
+// NewPasetoTokenGenerator is the function that return a PasetoTokenGenerator
 func NewPasetoTokenGenerator() (*PasetoTokenGenerator, ed25519.PublicKey, ed25519.PrivateKey, error) {
 
 	publicKey, privateKey, err := ed25519.GenerateKey(nil)
